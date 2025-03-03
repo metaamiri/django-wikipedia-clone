@@ -1,0 +1,15 @@
+{% extends 'encyclopedia/layout.html' %}
+
+{% block title %}test{% endblock %}
+
+{% block body %}
+    
+    <h1>Result for {{query}}</h1>
+    <ul>
+        {% for item in result %}
+            <li><a href="{% url 'wiki-page' item %}">{{item}}</a></li>
+        {% empty %}
+            <p>no result found</p>
+        {% endfor %}
+    </ul>
+{% endblock %}
