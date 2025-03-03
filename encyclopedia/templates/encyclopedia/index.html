@@ -6,7 +6,11 @@
 
 {% block body %}
     <h1>All Pages</h1>
-
+    {% if messages %}
+        {% for message in messages %}
+            <div class="warning-message">{{ message }} </div>
+        {% endfor %}    
+    {% endif %}
     <ul>
         {% for entry in entries %}
             <li><a href="{% url 'wiki-page' entry %}">{{ entry }}</a></li>

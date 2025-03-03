@@ -2,12 +2,14 @@ from django.shortcuts import render, redirect
 import markdown2
 import random
 from django.contrib import messages
+from .models import WikiPage
 from . import util
 
 
 def index(request):
     return render(request, "encyclopedia/index.html", {
         "entries": util.list_entries()})
+
 
 def page(request, title):
     entries = [item.lower() for item in util.list_entries()]
@@ -39,6 +41,7 @@ def create_new_page(request):
 
         if title not in util.list_entries():
             util.save_entry(title, content)
+            WikiPage(title=title, content=content).save()
             return redirect('wiki-page', title=title)    
         
         else :
@@ -52,6 +55,9 @@ def edit_page(request, title):
         title = request.POST["title"]
         content = request.POST["content"]
         util.save_entry(title, content)
+        page = WikiPage.objects.get(title=title)
+        page.content = content
+        page.save() 
         return redirect('wiki-page', title=title) 
 
     body = util.get_entry(title)
